@@ -4,6 +4,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -18,6 +19,16 @@ module.exports = function(grunt) {
     clean: {
       build: {
         src: ['dist/']
+      }
+    },
+
+    concat: {
+      options: {
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+      },
+      dist: {
+        src: [ '<%= srcFiles %>' ],
+        dest: 'dist/<%= pkg.name %>.js'
       }
     },
 
@@ -41,15 +52,20 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      // Re-lint test and sourc files when they change
+      jshint: {
+        files: ['test/**/*.js', 'dist/**/*.js', '!test/config/*'],
+        tasks: ['jshint']
+      },
       // Auto-build when source files change
       build: {
-          files: ['src/**/*.js'],
-          tasks: ['build']
+        files: ['src/**/*.js'],
+        tasks: ['build']
       },
       // Run unit test with karma
       karma: {
-          files: ['dist/**/*.js'],
-          tasks: ['karma:watch:run']
+        files: ['test/**/*.js', 'dist/**/*.js', '!test/config/*'],
+        tasks: ['karma:watch:run']
       }
     },
 
@@ -58,8 +74,8 @@ module.exports = function(grunt) {
         banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
       },
       build: {
-        src: 'src/**/*.js',
-        dest: 'build/<%= pkg.name %>.min.js'
+        src: 'dist/<%= pkg.name %>.js',
+        dest: 'dist/<%= pkg.name %>.min.js'
       }
     },
 
@@ -79,10 +95,13 @@ module.exports = function(grunt) {
         noarg: true,
         sub: true,
         undef: true,
-        unused: true,
+        // unused: true,
         globals: {
           angular: false,
-          $: false
+          // $: false,
+          matchMedia: false,
+          dump: false,
+          console: false
         }
       },
       src: [ '<%= srcFiles %>' ],
@@ -96,6 +115,7 @@ module.exports = function(grunt) {
             browser: false,
             browserTrigger: false,
             describe: false,
+            dump: false,
             expect: false,
             inject: false,
             input: false,
@@ -105,14 +125,11 @@ module.exports = function(grunt) {
             runs: false,
             spyOn: false,
             waits: false,
-            waitsFor: false,
-
-            ngGridWYSIWYGPlugin: false,
-            ngMidwayTester: false
+            waitsFor: false
           }
         },
         files: {
-          spec: ['test/**/*.js', '!test/lib/**/*.js']
+          spec: ['test/**/*.js', '!test/lib/**/*.js', '!test/config/*']
         },
       }
     }
@@ -121,7 +138,18 @@ module.exports = function(grunt) {
   grunt.registerTask('test', [ 'jshint', 'build', 'karma:run' ]);
   grunt.registerTask('debug', ['karma:watch', 'watch']);
 
-  grunt.registerTask('build', [ 'uglify' ]);
+  grunt.registerTask('build', [ 'jshint', 'concat', 'uglify' ]);
 
   grunt.registerTask('default', [ 'test' ]);
 };
+
+// TODO: add grunt-contrib-connect
+
+// connect: {
+//   server: {
+//     options: {
+//       port: 9001,
+//       base: 'test/assets' // <-- put images here!
+//     }
+//   }
+// }
