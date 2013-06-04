@@ -20,7 +20,7 @@ var app = angular.module('yourModule', ['ngResponsiveImages']);
 
 ```html
 <!-- Use the ng-src-responsive directive to set up your queries and sources -->
-<img src="small_image.jpg" ng-src-responsive="[ [ '(min-width: 960px)': 'larger_image.jpg' ], [ '(min-width: 1700px': 'much_larger_image.jpg' ] ]" />
+<img src="small_image.jpg" ng-src-responsive="[ [ '(min-width: 960px)': 'larger_image.jpg' ], [ '(min-width: 1700px)': 'much_larger_image.jpg' ] ]" />
 ```
 
 # Media Query Presets
