@@ -77,21 +77,6 @@ Here are some useful presets that you can use, which were stolen from [Foundatio
 <img src="blah.jpg" ng-src-responsive="[ [ 'retina': 'big_retina_image.jpg' ] ]" />
 ```
 
-<!--
-':   'only screen and (min-width: 1px)',
-'small':     'only screen and (min-width: 768px)',
-'medium':    'only screen and (min-width: 1280px)',
-'large':     'only screen and (min-width: 1440px)',
-'landscape': 'only screen and (orientation: landscape)',
-'portrait':  'only screen and (orientation: portrait)',
-'retina':    'only screen and (-webkit-min-device-pixel-ratio: 2), ' +
-             'only screen and (min--moz-device-pixel-ratio: 2), ' +
-             'only screen and (-o-min-device-pixel-ratio: 2/1), ' +
-             'only screen and (min-device-pixel-ratio: 2), ' +
-             'only screen and (min-resolution: 192dpi), ' +
-             'only screen and (min-resolution: 2dppx)'
--->
-
 # Testing
 
 It's difficult to test different viewport sizes, or at least difficult enough that a moron like me can't figure it out. So right now I dynamically get the `window` `innerWidth` and `innerHeight` properties to know what the testing browser has, then my tests run off that.
@@ -100,7 +85,8 @@ The test tasks a pretty simple:
 
     grunt test # Lint, build from source, and run the test suite
 
-    grunt debug # Start a watch for the files. Re-lint, re-build, and run tests when the source files change; re-lint and run tests when the test spec files change.
+    grunt debug # Start a watch for the files. Re-lint, re-build, and run tests when the source files change;
+                # re-lint and run tests when the test spec files change.
 
 You can also pass a --browsers option to these tasks (the default browser is PhantomJS):
 
