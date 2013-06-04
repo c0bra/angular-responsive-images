@@ -13,7 +13,13 @@ The `ng-src-responsive` directive takes an array of arrays. The inner arrays eac
 
 Also you can use a default small image for `src=""` as that will always get loaded, and can prevent weird page reflows when we alter the `src` after your angular app is loaded.
 
+```javascript
+// In your script file, inject the ngResponsiveImages module
+var app = angular.module('yourModule', ['ngResponsiveImages']);
+```
+
 ```html
+<!-- Use the ng-src-responsive directive to set up your queries and sources -->
 <img src="small_image.jpg" ng-src-responsive="[ [ '(min-width: 960px)': 'larger_image.jpg' ], [ '(min-width: 1700px': 'much_larger_image.jpg' ] ]" />
 ```
 
