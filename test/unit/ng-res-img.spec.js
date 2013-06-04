@@ -5,7 +5,8 @@
 describe('ngSrcResponsive', function () {
   var elm, $scope, $compile,
       recompile,
-      htmlWrap;
+      htmlWrap,
+      viewportWidth, viewportHeight;
 
   beforeEach(module('ngResImg'));
 
@@ -32,7 +33,10 @@ describe('ngSrcResponsive', function () {
       var htmlFoot = '</body></html>';
       elm = recompile(htmlHead + elm + htmlFoot);
       return elm;
-    }
+    };
+
+    viewportWidth = window.innerWidth;
+    viewportHeight = window.innerHeight;
   }]));
 
   // TODO: It must
@@ -43,30 +47,33 @@ describe('ngSrcResponsive', function () {
   //   5. Handle viewport change events for swapping out images
   //      a. I think this means we'll need to cache the image? Or maybe the browser should handle it?
 
-  describe('with a single always-matching query', function() {
+  describe('with a single query of min-width: 0', function() {
     describe('and one responsive source and a global media query', function() {
       it('should set the src to the only available image', function() {
         expect(elm.attr('src')).toEqual('default.jpg');
       });
     });
 
-    describe('with two responsive sources and a viewport of 10px', function() {
+    describe('with two responsive sources where the final one is innerWidth+1', function() {
       beforeEach(function(){
-        elm = htmlWrap('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: 20px)\', \'default2.jpg\' ] ]" />');
+        elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth+1) + 'px)\', \'default2.jpg\' ] ]" />');
       });
 
-      it('should choose the smaller one', function() {
-        var img = elm.find('img');
-        dump(elm);
-        expect(img).toBeDefined();
+      it('should choose the first (smaller) one', function() {
+        expect(elm.attr('src')).toEqual('default1.jpg');
+      });
+    });
 
-        expect(img.attr('src')).toEqual('default1.jpg');
-        expect(1).toBe(2);
+    describe('with two responsive sources where the final one is innerWidth-1', function() {
+      beforeEach(function(){
+        elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth-1) + 'px)\', \'default2.jpg\' ] ]" />');
+      });
+
+      it('should choose the second (larger) one', function() {
+        expect(elm.attr('src')).toEqual('default2.jpg');
       });
     });
   });
-
-  // QUESTION: do we need to use $httpBackend to receive the image requests and then respond with data: tags? Will that work? Or can we just watch the src="" attr?
 });
 
 })();

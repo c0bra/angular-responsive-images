@@ -19,8 +19,8 @@ files = [
 
 exclude = ['test/config/*']; // , 'test/lib/*'
 
-// autoWatch = true;
+autoWatch = true;
 
 singleRun = true;
 
-// browsers = ['PhantomJS'];
+browsers = ['PhantomJS'];

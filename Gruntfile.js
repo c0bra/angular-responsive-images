@@ -45,6 +45,7 @@ module.exports = function(grunt) {
         options: {
             configFile: 'test/config/karma.conf.js',
             autoWatch: false,
+            singleRun: false,
             browsers: browsers || '<%= defaultBrowsers %>'
         },
         background: true
@@ -145,7 +146,7 @@ module.exports = function(grunt) {
   grunt.registerTask('wtf', "Do stuff with karma and phantomjs", function() {
     // grunt.log.writeln('Karma!');
     
-    runKarma('start', {});
+    // runKarma('start', {});
 
     runPhantomjs();
   });
@@ -177,11 +178,11 @@ module.exports = function(grunt) {
     var done = grunt.task.current.async();
 
     var childArgs = [
-      path.join(__dirname, 'phantomjs-script.js'),
-      'some other argument (passed to phantomjs script)'
+      path.join(__dirname, 'phantomjs-script.js')
+      //'some other argument (passed to phantomjs script)'
     ];
 
-    grunt.util.spawn({
+    var child = grunt.util.spawn({
       cmd: binPath,
       args: childArgs
     }, function(err, result, code) {
@@ -191,6 +192,8 @@ module.exports = function(grunt) {
         done();
       }
     });
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
   }
 };
 
