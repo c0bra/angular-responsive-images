@@ -1,9 +1,9 @@
 (function(){
 
-var app = angular.module('ngResImg', []);
+var app = angular.module('ngResponsiveImages', []);
 
 // Default queries (stolen from Zurb Foundation)
-app.value('defaultQueries', {
+app.value('presetMediaQueries', {
   'default':   'only screen and (min-width: 1px)',
   'small':     'only screen and (min-width: 768px)',
   'medium':    'only screen and (min-width: 1280px)',
@@ -18,24 +18,17 @@ app.value('defaultQueries', {
                'only screen and (min-resolution: 2dppx)'
 });
 
-app.directive('ngSrcResponsive', ['defaultQueries', function(defaultQueries) {
-  // console.log('WELL HI!');
-
+app.directive('ngSrcResponsive', ['presetMediaQueries', function(presetMediaQueries) {
   return {
     restrict: 'A',
     scope: {
-      src: '@'
-      // resSrc: '@ngSrcResponsive'
+      src: '@' // Don't know if we really need this
     },
     link: function(scope, elm, attrs) {
       // Double-check that the matchMedia function matchMedia exists
       if (typeof(matchMedia) !== 'function') {
         throw "Function 'matchMedia' does not exist";
       }
-
-      // console.log('Hi there!');
-
-      // var mqs = [];
 
       // Query that gets run on link, whenever the directive attr changes, and whenever 
       function updateFromQuery(querySets) {
@@ -52,9 +45,10 @@ app.directive('ngSrcResponsive', ['defaultQueries', function(defaultQueries) {
 
           var queryText = set[0];
 
+          // If we were passed a preset query, use its value instead
           var query = queryText;
-          if (defaultQueries.hasOwnProperty(queryText)) {
-            query = defaultQueries[queryText];
+          if (presetMediaQueries.hasOwnProperty(queryText)) {
+            query = presetMediaQueries[queryText];
           }
 
           var mq = matchMedia(query);
@@ -81,9 +75,11 @@ app.directive('ngSrcResponsive', ['defaultQueries', function(defaultQueries) {
 
       attrs.$observe('ngSrcResponsive', function(value) {
         var querySets = scope.$eval(value);
+
         if (! querySets instanceof Array) {
           throw "Expected evaluate ng-src-responsive to evaluate to an Array, instead got: " + querySets;
         }
+
         updateFromQuery(querySets);
       });
     }

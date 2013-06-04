@@ -1,4 +1,4 @@
-angular-res-img
+Angular Responsive Images
 ===============
 
 Angular responsive images

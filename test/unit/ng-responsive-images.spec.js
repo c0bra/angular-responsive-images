@@ -53,27 +53,31 @@ describe('ngSrcResponsive', function () {
         expect(elm.attr('src')).toEqual('default.jpg');
       });
     });
+  });
 
-    describe('with two responsive sources where the final one is innerWidth+1', function() {
-      beforeEach(function(){
-        elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth+1) + 'px)\', \'default2.jpg\' ] ]" />');
-      });
-
-      it('should choose the first (smaller) one', function() {
-        expect(elm.attr('src')).toEqual('default1.jpg');
-      });
+  describe('with two responsive sources where the final one is innerWidth+1', function() {
+    beforeEach(function(){
+      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth+1) + 'px)\', \'default2.jpg\' ] ]" />');
     });
 
-    describe('with two responsive sources where the final one is innerWidth-1', function() {
-      beforeEach(function(){
-        elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth-1) + 'px)\', \'default2.jpg\' ] ]" />');
-      });
-
-      it('should choose the second (larger) one', function() {
-        expect(elm.attr('src')).toEqual('default2.jpg');
-      });
+    it('should choose the first (smaller) one', function() {
+      expect(elm.attr('src')).toEqual('default1.jpg');
     });
   });
+
+  describe('with two responsive sources where the final one is innerWidth-1', function() {
+    beforeEach(function(){
+      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth-1) + 'px)\', \'default2.jpg\' ] ]" />');
+    });
+
+    it('should choose the second (larger) one', function() {
+      expect(elm.attr('src')).toEqual('default2.jpg');
+    });
+  });
+
+  // TODO: add spec here for 
+
+  // TODO: add specs for event-based media queries. But how do we do that?
 });
 
 })();
