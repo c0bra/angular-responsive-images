@@ -198,14 +198,3 @@ module.exports = function(grunt) {
 };
 
 function finished(code){ return this(code === 0); }
-
-// TODO: add grunt-contrib-connect
-
-// connect: {
-//   server: {
-//     options: {
-//       port: 9001,
-//       base: 'test/assets' // <-- put images here!
-//     }
-//   }
-// }
