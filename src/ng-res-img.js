@@ -44,30 +44,34 @@ app.directive('ngSrcResponsive', ['defaultQueries', function(defaultQueries) {
           
         // });
 
-        var lastTrueQuery;
+        var lastTrueQuerySet;
 
-        for (var query in querySets) {
-          if (querySets.hasOwnProperty(query)) {
-            if (defaultQueries.hasOwnProperty(query)) {
-              query = defaultQueries[query];
-            }
+        // for (var query in querySets) {
+        angular.forEach(querySets, function(set) {
+          // if (querySets.hasOwnProperty(query)) {
 
-            var mq = matchMedia(query);
-            dump(query);
+          var queryText = set[0];
 
-            if (mq.matches) {
-              lastTrueQuery = query;
-            }
-
-            // Add a listener for when this query matches
-            // mq.addListener(function() {
-            //   setSrc(src);
-            // });
+          var query = queryText;
+          if (defaultQueries.hasOwnProperty(queryText)) {
+            query = defaultQueries[queryText];
           }
-        }
 
-        if (lastTrueQuery) {
-          setSrc( querySets[lastTrueQuery] );
+          var mq = matchMedia(query);
+
+          if (mq.matches) {
+            lastTrueQuerySet = set;
+          }
+
+          // Add a listener for when this query matches
+          // mq.addListener(function() {
+          //   setSrc(src);
+          // });
+          // }
+        });
+
+        if (lastTrueQuerySet) {
+          setSrc( lastTrueQuerySet[1] );
         }
       }
 
@@ -77,6 +81,9 @@ app.directive('ngSrcResponsive', ['defaultQueries', function(defaultQueries) {
 
       attrs.$observe('ngSrcResponsive', function(value) {
         var querySets = scope.$eval(value);
+        if (! querySets instanceof Array) {
+          throw "Expected evaluate ng-src-responsive to evaluate to an Array, instead got: " + querySets;
+        }
         updateFromQuery(querySets);
       });
     }

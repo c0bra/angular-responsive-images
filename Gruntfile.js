@@ -135,13 +135,66 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.registerTask('test', [ 'jshint', 'build', 'karma:run' ]);
+  grunt.registerTask('test', [ 'jshint', 'build', 'karma:unit' ]);
   grunt.registerTask('debug', ['karma:watch', 'watch']);
 
   grunt.registerTask('build', [ 'jshint', 'concat', 'uglify' ]);
 
   grunt.registerTask('default', [ 'test' ]);
+
+  grunt.registerTask('wtf', "Do stuff with karma and phantomjs", function() {
+    // grunt.log.writeln('Karma!');
+    
+    runKarma('start', {});
+
+    runPhantomjs();
+  });
+
+  function runKarma(command, options) {
+    // var testacularCmd = process.platform === 'win32' ? 'testacular.cmd' : 'testacular';
+    var karmaCmd = 'karma';
+    var args = [command, 'test/config/karma.conf.js'].concat(options);
+    var done = grunt.task.current.async();
+    var child = grunt.util.spawn({
+      cmd: karmaCmd,
+      args: args
+    }, function(err, result, code) {
+      if (code) {
+        done(false);
+      } else {
+        done();
+      }
+    });
+    child.stdout.pipe(process.stdout);
+    child.stderr.pipe(process.stderr);
+  }
+
+  function runPhantomjs() {
+    var phantomjs = require('phantomjs');
+    var path = require('path');
+    var binPath = phantomjs.path;
+
+    var done = grunt.task.current.async();
+
+    var childArgs = [
+      path.join(__dirname, 'phantomjs-script.js'),
+      'some other argument (passed to phantomjs script)'
+    ];
+
+    grunt.util.spawn({
+      cmd: binPath,
+      args: childArgs
+    }, function(err, result, code) {
+      if (code) {
+        done(false);
+      } else {
+        done();
+      }
+    });
+  }
 };
+
+function finished(code){ return this(code === 0); }
 
 // TODO: add grunt-contrib-connect
 

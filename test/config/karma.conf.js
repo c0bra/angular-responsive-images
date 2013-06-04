@@ -17,8 +17,10 @@ files = [
   'test/**/*.js'
 ];
 
-exclude = ['test/config/*'];
+exclude = ['test/config/*']; // , 'test/lib/*'
 
-autoWatch = true;
+// autoWatch = true;
 
-browsers = ['PhantomJS'];
+singleRun = true;
+
+// browsers = ['PhantomJS'];
