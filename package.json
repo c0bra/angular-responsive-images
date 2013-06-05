@@ -31,6 +31,7 @@
     "karma": "~0.8.5",
     "phantomjs": "~1.9.0-6",
     "shelljs": "~0.1.4",
-    "faithful-exec": "~0.1.0"
+    "faithful-exec": "~0.1.0",
+    "grunt-git": "0.0.1"
   }
 }

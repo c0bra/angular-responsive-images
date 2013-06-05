@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-git');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -138,6 +139,15 @@ module.exports = function(grunt) {
           spec: ['test/**/*.js', '!test/lib/**/*.js', '!test/config/*']
         },
       }
+    },
+
+    git: {
+      'gh-pages': {
+        options: {
+          command: 'commit',
+          message: 'Automatic gh-pages build'
+        }
+      }
     }
   });
   
@@ -158,7 +168,8 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('grunt build');
       }).then(function () {
-        return system('git commit -a');
+        // return system('git commit -m \'Automatic gh-pages build\' -a');
+        return grunt.task.run('git:gh-pages');
       }).then(function () {
         return system('git checkout master');
       })
