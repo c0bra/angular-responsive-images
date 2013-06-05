@@ -30,13 +30,24 @@ app.directive('ngSrcResponsive', ['presetMediaQueries', function(presetMediaQuer
         throw "Function 'matchMedia' does not exist";
       }
 
+      // Array of media query and listener sets
+      // 
+      // {
+      //    mql: <MediaQueryList object>
+      //    listener: function () { ... } 
+      // }
+      // 
+      var listenerSets = [];
+
       // Query that gets run on link, whenever the directive attr changes, and whenever 
       function updateFromQuery(querySets) {
         // Destroy registered listeners, we will re-register them below
-        // angular.forEach(listenerDeregs, function(dereg) {
-          
-        // });
+        angular.forEach(listenerSets, function(set) {
+          set.mql.removeListener(set.listener);
+        });
 
+        // Clear the deregistration functions
+        listenerSets = [];
         var lastTrueQuerySet;
 
         // for (var query in querySets) {
@@ -57,11 +68,19 @@ app.directive('ngSrcResponsive', ['presetMediaQueries', function(presetMediaQuer
             lastTrueQuerySet = set;
           }
 
-          // Add a listener for when this query matches
-          // mq.addListener(function() {
-          //   setSrc(src);
-          // });
-          // }
+          // Listener function for this query
+          var queryListener = function(mql) {
+            // TODO: add throttling or a debounce here (or somewhere) to prevent this function from being called a ton of times
+            updateFromQuery(querySets);
+          };
+
+          // Add a listener for when this query's match changes
+          mq.addListener(queryListener);
+
+          listenerSets.push({
+            mql: mq,
+            listener: queryListener
+          });
         });
 
         if (lastTrueQuerySet) {
@@ -70,9 +89,11 @@ app.directive('ngSrcResponsive', ['presetMediaQueries', function(presetMediaQuer
       }
 
       function setSrc(src) {
+        console.log('setting src', src);
         elm.attr('src', src);
       }
 
+      var updaterDereg;
       attrs.$observe('ngSrcResponsive', function(value) {
         var querySets = scope.$eval(value);
 
@@ -81,6 +102,17 @@ app.directive('ngSrcResponsive', ['presetMediaQueries', function(presetMediaQuer
         }
 
         updateFromQuery(querySets);
+
+        // Remove the previous matchMedia listener
+        if (typeof(updaterDereg) === 'function') { updaterDereg(); }
+
+        // Add a global match-media listener back
+        // var mq = matchMedia('only screen and (min-width: 1px)');
+        // console.log('mq', mq);
+        // updaterDereg = mq.addListener(function(){
+        //   console.log('updating!');
+        //   updateFromQuery(querySets);
+        // });
       });
     }
   };
