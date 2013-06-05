@@ -200,9 +200,11 @@ module.exports = function(grunt) {
       return exec(cmd, opts).then(function (result) {
         grunt.log.write(result.stderr + result.stdout);
       }, function (error) {
-        grunt.log.write(error);
-        grunt.log.write(error.stderr + '\n');
-        if (!allowError) { throw 'Failed to run \'' + cmd + '\''; }
+        if (!allowError) {
+          grunt.log.write(error);
+          grunt.log.write(error.stderr + '\n');
+          throw 'Failed to run \'' + cmd + '\'';
+        }
       });
     }
     else {
@@ -212,7 +214,11 @@ module.exports = function(grunt) {
       }, function (error) {
         grunt.log.write('error', error);
         grunt.log.write(error.stderr + '\n');
-        if (!allowError) { throw 'Failed to run \'' + cmd + '\''; }
+        if (!allowError) {
+          grunt.log.write(error);
+          grunt.log.write(error.stderr + '\n');
+          throw 'Failed to run \'' + cmd + '\'';
+        }
       });
     }
   }
