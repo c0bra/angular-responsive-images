@@ -23,6 +23,10 @@ var app = angular.module('yourModule', ['ngResponsiveImages']);
 <img src="small_image.jpg" ng-src-responsive="[ [ '(min-width: 960px)': 'larger_image.jpg' ], [ '(min-width: 1700px)': 'much_larger_image.jpg' ] ]" />
 ```
 
+## Events
+
+Changes to the viewport that causes your media queries to either suddenly match or no longer match (i.e. from browser resizing, orientation change, etc), will trigger updates to the source.  Because these event handlers can be fired concurrently, running through the media query set happens within a zero-second `$timeout`. That way when you have three media queryies and maximize your browser from small to large, the image source doesn't get set to the last matching media query 3 separate times.
+
 # Media Query Presets
 
 Here are some useful presets that you can use, which were stolen from [Foundation](http://foundation.zurb.com/docs/components/interchange.html).
