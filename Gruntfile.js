@@ -154,13 +154,13 @@ module.exports = function(grunt) {
         shjs.rm('-rf', 'build');
         return system('git checkout', 'gh-pages');
       }).then(function () {
-        return system('git', 'merge master');
+        return system('git merge', 'master');
       }).then(function () {
         return system('grunt', 'build');
       }).then(function () {
         return system('git', 'commit -a -m \'Automatic gh-pages build\'');
       }).then(function () {
-        return system('git', 'checkout master'); 
+        return system('git checkout', 'master'); 
       })
     );
   });
