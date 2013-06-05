@@ -8,7 +8,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-git');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -139,15 +138,6 @@ module.exports = function(grunt) {
           spec: ['test/**/*.js', '!test/lib/**/*.js', '!test/config/*']
         },
       }
-    },
-
-    git: {
-      'gh-pages': {
-        options: {
-          command: 'commit',
-          message: 'Automatic gh-pages build'
-        }
-      }
     }
   });
   
@@ -168,8 +158,7 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('grunt build');
       }).then(function () {
-        // return system('git commit -m \'Automatic gh-pages build\' -a');
-        return grunt.task.run('git:gh-pages');
+        return system('git', 'commit -a -m \'Automatic gh-pages build\'');
       }).then(function () {
         return system('git checkout master');
       })
@@ -180,9 +169,9 @@ module.exports = function(grunt) {
   // Helpers for custom tasks, mainly around promises / exec
   var exec = require('faithful-exec'), shjs = require('shelljs');
 
-  function system(cmd) {
-    grunt.log.write('% ' + cmd + '\n');
-    return exec(cmd).then(function (result) {
+  function system(cmd, opts) {
+    grunt.log.write('% ' + cmd + ' ' + opts + '\n');
+    return exec(cmd, opts).then(function (result) {
       grunt.log.write(result.stderr + result.stdout);
     }, function (error) {
       grunt.log.write(error.stderr + '\n');
