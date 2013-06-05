@@ -28,6 +28,7 @@ describe('ngSrcResponsive', function () {
       return elm;
     };
 
+    // TODO: can probably remove this as we can't force viewport size
     htmlWrap = function(elm) {
       var htmlHead = '<html><head><meta name="viewport" content="width=9px; initial-scale=1.0; maximum-scale=1.0;"></head><body>';
       var htmlFoot = '</body></html>';
