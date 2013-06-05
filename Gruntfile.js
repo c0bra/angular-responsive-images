@@ -60,7 +60,7 @@ module.exports = function(grunt) {
       },
       // Auto-build when source files change
       build: {
-        files: ['src/**/*.js'],
+        files: ['<%= srcFiles %>'],
         tasks: ['build'],
         options: {
           livereload: true
@@ -140,65 +140,62 @@ module.exports = function(grunt) {
       }
     }
   });
-
-  grunt.registerTask('test', [ 'jshint', 'build', 'karma:unit' ]);
-  grunt.registerTask('debug', ['karma:watch', 'watch']);
-
-  grunt.registerTask('build', [ 'jshint', 'concat', 'uglify' ]);
-
+  
   grunt.registerTask('default', [ 'test' ]);
 
-  grunt.registerTask('wtf', "Do stuff with karma and phantomjs", function() {
-    // grunt.log.writeln('Karma!');
-    
-    // runKarma('start', {});
+  grunt.registerTask('test', "Jshint, build, and run unit tests", [ 'jshint', 'build', 'karma:unit' ]);
+  grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch', 'watch']);
 
-    runPhantomjs();
+  grunt.registerTask('build', "Jshint build from source and minify", [ 'jshint', 'concat', 'uglify' ]);
+
+  grunt.registerTask('publish-pages', 'Publish a clean build, docs, and sample to github.io', function () {
+    promising(this,
+      ensureCleanMaster().then(function () {
+        shjs.rm('-rf', 'build');
+        return system('git checkout gh-pages');
+      }).then(function () {
+        return system('git merge master');
+      }).then(function () {
+        return system('grunt build');
+      }).then(function () {
+        return system('git commit -a -m \'Automatic gh-pages build\'');
+      }).then(function () {
+        return system('git checkout master');
+      })
+    );
   });
 
-  function runKarma(command, options) {
-    // var testacularCmd = process.platform === 'win32' ? 'testacular.cmd' : 'testacular';
-    var karmaCmd = 'karma';
-    var args = [command, 'test/config/karma.conf.js'].concat(options);
-    var done = grunt.task.current.async();
-    var child = grunt.util.spawn({
-      cmd: karmaCmd,
-      args: args
-    }, function(err, result, code) {
-      if (code) {
-        done(false);
-      } else {
-        done();
-      }
+
+  // Helpers for custom tasks, mainly around promises / exec
+  var exec = require('faithful-exec'), shjs = require('shelljs');
+
+  function system(cmd) {
+    grunt.log.write('% ' + cmd + '\n');
+    return exec(cmd).then(function (result) {
+      grunt.log.write(result.stderr + result.stdout);
+    }, function (error) {
+      grunt.log.write(error.stderr + '\n');
+      throw 'Failed to run \'' + cmd + '\'';
     });
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
   }
 
-  function runPhantomjs() {
-    var phantomjs = require('phantomjs');
-    var path = require('path');
-    var binPath = phantomjs.path;
-
-    var done = grunt.task.current.async();
-
-    var childArgs = [
-      path.join(__dirname, 'phantomjs-script.js')
-      //'some other argument (passed to phantomjs script)'
-    ];
-
-    var child = grunt.util.spawn({
-      cmd: binPath,
-      args: childArgs
-    }, function(err, result, code) {
-      if (code) {
-        done(false);
-      } else {
-        done();
-      }
+  function promising(task, promise) {
+    var done = task.async();
+    promise.then(function () {
+      done();
+    }, function (error) {
+      grunt.log.write(error + '\n');
+      done(false);
     });
-    child.stdout.pipe(process.stdout);
-    child.stderr.pipe(process.stderr);
+  }
+
+  function ensureCleanMaster() {
+    return exec('git symbolic-ref HEAD').then(function (result) {
+      if (result.stdout.trim() !== 'refs/heads/master') throw 'Not on master branch, aborting';
+      return exec('git status --porcelain');
+    }).then(function (result) {
+      if (result.stdout.trim() !== '') throw 'Working copy is dirty, aborting';
+    });
   }
 };
 
