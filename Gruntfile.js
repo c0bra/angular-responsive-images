@@ -152,7 +152,7 @@ module.exports = function(grunt) {
     promising(this,
       ensureCleanMaster().then(function () {
         shjs.rm('-rf', 'build');
-        return system('git', 'checkout gh-pages');
+        return system('git checkout gh-pages');
       }).then(function () {
         return system('git merge master');
       }).then(function () {
