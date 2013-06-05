@@ -160,11 +160,17 @@ module.exports = function(grunt) {
       }).then(function () {
 
         // return system('git commit', '-a -m \'Automatic gh-pages build\'');
-        var b = system('git commit --allow-empty-message -a');
 
-        grunt.log.writeln('b', b);
 
-        return b;
+        // var b =
+
+        return ensureDirty().then(function() {
+          return system('git commit --allow-empty-message -a');
+        }
+
+        // grunt.log.writeln('b', b);
+
+        // return b;
         // cexec('git commit -m "" -a', function (error, stdout, stderr) {
         //   grunt.log.writeln('stdout: ' + stdout);
         //   grunt.log.writeln('stderr: ' + stderr);
@@ -223,6 +229,12 @@ module.exports = function(grunt) {
       return exec('git status --porcelain');
     }).then(function (result) {
       if (result.stdout.trim() !== '') throw 'Working copy is dirty, aborting';
+    });
+  }
+
+  function ensureDirty() {
+    return exec('git status --porcelain').then(function (result) {
+      if (result.stdout.trim() === '') throw 'Working copy is clean, aborting';
     });
   }
 };
