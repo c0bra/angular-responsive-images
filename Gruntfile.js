@@ -195,32 +195,16 @@ module.exports = function(grunt) {
   var cexec = require('child_process').exec;
 
   function system(cmd, opts, allowError) {
-    if (opts) {
-      grunt.log.write('% ' + cmd + ' ' + opts + '\n');
-      return exec(cmd, opts).then(function (result) {
-        grunt.log.write(result.stderr + result.stdout);
-      }, function (error) {
-        if (!allowError) {
-          grunt.log.write(error);
-          grunt.log.write(error.stderr + '\n');
-          throw 'Failed to run \'' + cmd + '\'';
-        }
-      });
-    }
-    else {
-      grunt.log.write('% ' + cmd + '\n');
-      return exec(cmd).then(function (result) {
-        grunt.log.write(result.stderr + result.stdout);
-      }, function (error) {
-        grunt.log.write('error', error);
+    grunt.log.write('% ' + cmd + '\n');
+    return exec(cmd, opts).then(function (result) {
+      grunt.log.write(result.stderr + result.stdout);
+    }, function (error) {
+      if (!allowError) {
+        grunt.log.write(error);
         grunt.log.write(error.stderr + '\n');
-        if (!allowError) {
-          grunt.log.write(error);
-          grunt.log.write(error.stderr + '\n');
-          throw 'Failed to run \'' + cmd + '\'';
-        }
-      });
-    }
+        throw 'Failed to run \'' + cmd + '\'';
+      }
+    });
   }
 
   function promising(task, promise) {
