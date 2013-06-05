@@ -164,9 +164,13 @@ module.exports = function(grunt) {
 
         // var b =
 
-        return ensureDirty().then(function() {
-          return system('git commit --allow-empty-message -a');
-        });
+        // return ensureDirty().then(function() {
+        //   return system('git commit --allow-empty-message -a');
+        // });
+        return system('git diff --exit-code').then(function(){},
+          function(){
+            return system('git commit --allow-empty-message -a');
+          });
 
         // grunt.log.writeln('b', b);
 
