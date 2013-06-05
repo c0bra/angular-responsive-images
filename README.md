@@ -104,11 +104,11 @@ You can also pass a --browsers option to these tasks (the default browser is Pha
 
 # Todo
 
-* Remove weird Gruntfile tasks that I added*
-* Handle updates g-src-responsive bound values...
+* Handle updates ng-src-responsive bound values...
 * Add handling of ng-src
 * Add pretty auto-generated gh-pages branch with examples of the same code in a bunch of different iframes``
 * Add bower.json
+* Add release tasks
 
 # Acknowledgements
 

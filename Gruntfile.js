@@ -11,20 +11,22 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
-
     srcFiles: 'src/**/*.js',
+    builddir: 'dist',
+    buildtag: '-dev-' + grunt.template.today('yyyy-mm-dd'),
 
     defaultBrowsers: ['PhantomJS'],
 
-    clean: {
-      build: {
-        src: ['dist/']
-      }
-    },
+    clean: ['<%= builddir %>'],
 
     concat: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '/**\n' +
+                ' * <%= pkg.description %>\n' +
+                ' * @version v<%= pkg.version %><%= buildtag %>\n' +
+                ' * @link <%= pkg.repository.url %>\n' +
+                ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
+                ' */'
       },
       dist: {
         src: [ '<%= srcFiles %>' ],
@@ -81,6 +83,12 @@ module.exports = function(grunt) {
         src: 'dist/<%= pkg.name %>.js',
         dest: 'dist/<%= pkg.name %>.min.js'
       }
+    },
+
+    release: {
+      files: ['<%= pkg.name %>.js', '<%= pkg.name %>.min.js'],
+      src: '<%= builddir %>',
+      dest: 'release'
     },
 
     jshint: {
@@ -142,53 +150,95 @@ module.exports = function(grunt) {
   });
   
   grunt.registerTask('default', [ 'test' ]);
-
   grunt.registerTask('test', "Jshint, build, and run unit tests", [ 'jshint', 'build', 'karma:unit' ]);
   grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch', 'watch']);
-
   grunt.registerTask('build', "Jshint build from source and minify", [ 'jshint', 'concat', 'uglify' ]);
+  grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
 
+  var path = require('path');
+  var makePromise = require('make-promise');
   grunt.registerTask('publish-pages', 'Publish a clean build, docs, and sample to github.io', function () {
     promising(this,
       ensureCleanMaster().then(function () {
-        shjs.rm('-rf', 'build');
+        // Remove anything in the build dir
+        shjs.rm('-rf', 'dist');
+
+        // Move to the gh-pages branch
         return system('git checkout gh-pages');
       }).then(function () {
+        // Merge the master branch changes in
         return system('git merge master');
       }).then(function () {
+        // Build from source
         return system('grunt build');
       }).then(function () {
+        // Copy the built files to their versioned counterparts
+        var version = grunt.config('pkg.version');
 
-        // return system('git commit', '-a -m \'Automatic gh-pages build\'');
 
 
-        // var b =
+        var bigfile = grunt.config('uglify.build.src');
+        var bigFileDir = path.dirname(bigfile);
+        var bigfileName = path.basename(bigfile, path.extname(bigfile);
 
-        // return ensureDirty().then(function() {
-        //   return system('git commit --allow-empty-message -a');
-        // });
+        var bigfile = grunt.config('uglify.build.src');
+        var bigFileDir = path.dirname(bigfile);
+        var bigfileName = path.basename(bigfile, path.extname(bigfile);
+
+        return system('cp ' + grunt.config('uglify.build.src') +  );
+      }).then(function () {
         return system('git diff --exit-code', {}, true).then(function(){},
           function(){
             return system('git commit --allow-empty-message -a');
           });
 
-        // grunt.log.writeln('b', b);
-
-        // return b;
-        // cexec('git commit -m "" -a', function (error, stdout, stderr) {
-        //   grunt.log.writeln('stdout: ' + stdout);
-        //   grunt.log.writeln('stderr: ' + stderr);
-        //   if (error !== null) {
-        //     grunt.log.writeln('exec error: ' + error);
-        //   }
-        // });
-
       }).then(function () {
-        return system('git checkout master'); 
+        return system('git checkout master');
       })
     );
   });
 
+  grunt.registerTask('prepare-release', function () {
+    var bower = grunt.file.readJSON('bower.json'),
+        version = bower.version;
+    if (version != grunt.config('pkg.version')) throw 'Version mismatch in bower.json';
+
+    promising(this,
+      ensureCleanMaster().then(function () {
+        return exec('git tag -l \'' + version + '\'');
+      }).then(function (result) {
+        if (result.stdout.trim() !== '') throw 'Tag \'' + version + '\' already exists';
+        grunt.config('buildtag', '');
+        grunt.config('builddir', 'release');
+      })
+    );
+  });
+
+  grunt.registerTask('perform-release', function () {
+    grunt.task.requires([ 'prepare-release', 'build' ]);
+
+    var version = grunt.config('pkg.version'), releasedir = grunt.config('builddir');
+    promising(this,
+      system('git add \'' + releasedir + '\'').then(function () {
+        return system('git commit -m \'release ' + version + '\'');
+      }).then(function () {
+        return system('git tag \'' + version + '\'');
+      })
+    );
+
+    // Update the versioned files in the gh-pages repo
+  });
+
+  grunt.registerTask('version', 'Change the version to X' function() {
+    // Get the version argument
+
+    // Change version with npm
+    promising(this,
+      system('npm version').then(function(){
+        // Change version in bower file
+      })
+    );
+  });
 
   // Helpers for custom tasks, mainly around promises / exec
   var exec = require('faithful-exec'), shjs = require('shelljs');
@@ -223,12 +273,6 @@ module.exports = function(grunt) {
       return exec('git status --porcelain');
     }).then(function (result) {
       if (result.stdout.trim() !== '') throw 'Working copy is dirty, aborting';
-    });
-  }
-
-  function ensureDirty() {
-    return exec('git status --porcelain').then(function (result) {
-      if (result.stdout.trim() === '') throw 'Working copy is clean, aborting';
     });
   }
 };
