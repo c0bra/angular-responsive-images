@@ -10,7 +10,7 @@ files = [
   // 'test/lib/angular/browserTrigger.js',
 
   // App code
-  'dist/angular-res-img.js',
+  'dist/angular-responsive-images.js',
   
   // Test specs
   // 'test/unit/**/*.js'
