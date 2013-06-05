@@ -200,6 +200,7 @@ module.exports = function(grunt) {
       return exec(cmd).then(function (result) {
         grunt.log.write(result.stderr + result.stdout);
       }, function (error) {
+        grunt.log.write('error', error);
         grunt.log.write(error.stderr + '\n');
         throw 'Failed to run \'' + cmd + '\'';
       });
