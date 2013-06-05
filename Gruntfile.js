@@ -167,7 +167,7 @@ module.exports = function(grunt) {
         // return ensureDirty().then(function() {
         //   return system('git commit --allow-empty-message -a');
         // });
-        return system('git diff --exit-code').then(function(){},
+        return system('git diff --exit-code', {}, true).then(function(){},
           function(){
             return system('git commit --allow-empty-message -a');
           });
@@ -194,7 +194,7 @@ module.exports = function(grunt) {
   var exec = require('faithful-exec'), shjs = require('shelljs');
   var cexec = require('child_process').exec;
 
-  function system(cmd, opts) {
+  function system(cmd, opts, allowError) {
     if (opts) {
       grunt.log.write('% ' + cmd + ' ' + opts + '\n');
       return exec(cmd, opts).then(function (result) {
@@ -202,7 +202,7 @@ module.exports = function(grunt) {
       }, function (error) {
         grunt.log.write(error);
         grunt.log.write(error.stderr + '\n');
-        throw 'Failed to run \'' + cmd + '\'';
+        if (!allowError) { throw 'Failed to run \'' + cmd + '\''; }
       });
     }
     else {
@@ -212,7 +212,7 @@ module.exports = function(grunt) {
       }, function (error) {
         grunt.log.write('error', error);
         grunt.log.write(error.stderr + '\n');
-        throw 'Failed to run \'' + cmd + '\'';
+        if (!allowError) { throw 'Failed to run \'' + cmd + '\''; }
       });
     }
   }
