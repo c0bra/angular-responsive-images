@@ -8,7 +8,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-git');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -139,15 +138,6 @@ module.exports = function(grunt) {
           spec: ['test/**/*.js', '!test/lib/**/*.js', '!test/config/*']
         },
       }
-    },
-
-    git: {
-      'gh-pages': {
-        options: {
-          command: 'commit',
-          message: 'Automatic gh-pages build'
-        }
-      }
     }
   });
   
@@ -168,10 +158,33 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('grunt build');
       }).then(function () {
-        // return system('git commit -m \'Automatic gh-pages build\' -a');
-        return grunt.task.run('git:gh-pages');
+
+        // return system('git commit', '-a -m \'Automatic gh-pages build\'');
+
+
+        // var b =
+
+        // return ensureDirty().then(function() {
+        //   return system('git commit --allow-empty-message -a');
+        // });
+        return system('git diff --exit-code', {}, true).then(function(){},
+          function(){
+            return system('git commit --allow-empty-message -a');
+          });
+
+        // grunt.log.writeln('b', b);
+
+        // return b;
+        // cexec('git commit -m "" -a', function (error, stdout, stderr) {
+        //   grunt.log.writeln('stdout: ' + stdout);
+        //   grunt.log.writeln('stderr: ' + stderr);
+        //   if (error !== null) {
+        //     grunt.log.writeln('exec error: ' + error);
+        //   }
+        // });
+
       }).then(function () {
-        return system('git checkout master');
+        return system('git checkout master'); 
       })
     );
   });
@@ -179,14 +192,18 @@ module.exports = function(grunt) {
 
   // Helpers for custom tasks, mainly around promises / exec
   var exec = require('faithful-exec'), shjs = require('shelljs');
+  var cexec = require('child_process').exec;
 
-  function system(cmd) {
+  function system(cmd, opts, allowError) {
     grunt.log.write('% ' + cmd + '\n');
-    return exec(cmd).then(function (result) {
+    return exec(cmd, opts).then(function (result) {
       grunt.log.write(result.stderr + result.stdout);
     }, function (error) {
-      grunt.log.write(error.stderr + '\n');
-      throw 'Failed to run \'' + cmd + '\'';
+      if (!allowError) {
+        grunt.log.write(error);
+        grunt.log.write(error.stderr + '\n');
+        throw 'Failed to run \'' + cmd + '\'';
+      }
     });
   }
 
@@ -206,6 +223,12 @@ module.exports = function(grunt) {
       return exec('git status --porcelain');
     }).then(function (result) {
       if (result.stdout.trim() !== '') throw 'Working copy is dirty, aborting';
+    });
+  }
+
+  function ensureDirty() {
+    return exec('git status --porcelain').then(function (result) {
+      if (result.stdout.trim() === '') throw 'Working copy is clean, aborting';
     });
   }
 };
