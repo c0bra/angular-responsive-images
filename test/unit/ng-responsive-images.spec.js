@@ -87,8 +87,6 @@ describe('ngSrcResponsive', function () {
     });
   });
 
-  // TODO: add spec here for 
-
   // TODO: add specs for event-based media queries. But how do we do that?
 });
 
