@@ -158,7 +158,16 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('grunt build');
       }).then(function () {
-        return system('git commit', '-a -m \'Automatic gh-pages build\'');
+
+        // return system('git commit', '-a -m \'Automatic gh-pages build\'');
+        cexec('git commit -a -m \'Automatic gh-pages build\'', function (error, stdout, stderr) {
+          grunt.log.writeln('stdout: ' + stdout);
+          grunt.log.writeln('stderr: ' + stderr);
+          if (error !== null) {
+            grunt.log.writeln('exec error: ' + error);
+          }
+        });
+
       }).then(function () {
         return system('git checkout master'); 
       })
@@ -168,6 +177,7 @@ module.exports = function(grunt) {
 
   // Helpers for custom tasks, mainly around promises / exec
   var exec = require('faithful-exec'), shjs = require('shelljs');
+  var cexec = require('child_process').exec;
 
   function system(cmd, opts) {
     if (opts) {
