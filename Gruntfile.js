@@ -156,7 +156,7 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('git merge master');
       }).then(function () {
-        return system('grunt merge build');
+        return system('grunt build');
       }).then(function () {
         return system('git commit', '-a -m \'Automatic gh-pages build\'');
       }).then(function () {
