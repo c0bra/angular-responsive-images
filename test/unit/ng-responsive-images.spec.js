@@ -3,28 +3,31 @@
 "use strict";
 
 describe('ngSrcResponsive', function () {
-  var elm, $scope, $compile,
+  var elm, $scope, $compile, $timeout,
       recompile,
       htmlWrap,
       viewportWidth, viewportHeight;
 
   beforeEach(module('ngResponsiveImages'));
 
-  beforeEach(inject(['$rootScope', '$compile', function ($rootScope, _$compile_) {
+  beforeEach(inject(['$rootScope', '$compile', '$timeout', function ($rootScope, _$compile_, _$timeout_) {
     // TODO: create and compile the directive here
     $scope = $rootScope;
     $compile = _$compile_;
+    $timeout = _$timeout_;
 
     elm = angular.element('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 0px)\', \'default.jpg\' ] ]" />');
 
     $compile(elm)($scope);
     $scope.$digest();
+    $timeout.flush(); // Have to call $timeout.flush() because we update the image source within a timeout to prevent concurrent updates during media query changes
 
     // Re-usable function to recompile the element
     recompile = function(elm) {
       elm = angular.element(elm);
       $compile(elm)($scope);
       $scope.$digest();
+      $timeout.flush();
       return elm;
     };
 
@@ -48,7 +51,13 @@ describe('ngSrcResponsive', function () {
   //   5. Handle viewport change events for swapping out images
   //      a. I think this means we'll need to cache the image? Or maybe the browser should handle it?
 
-  // TODO: add test for ng-src-responsive="{ blah blah blah }", i.e. not an array
+  describe('when the directive does not evaluate to an array', function() {
+    it('should throw an exception', function() {
+      expect(function(){
+        recompile('<img src="orig.jpg" ng-src-responsive="{ \'(min-width: 0px)\': \'default.jpg\' }" />');
+      }).toThrow();
+    });
+  });
 
   describe('with a single query of min-width: 0', function() {
     describe('and one responsive source and a global media query', function() {
