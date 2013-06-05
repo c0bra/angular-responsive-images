@@ -160,7 +160,7 @@ module.exports = function(grunt) {
       }).then(function () {
 
         // return system('git commit', '-a -m \'Automatic gh-pages build\'');
-        return system('git commit -a -m ""');
+        return system('git commit -a');
         // cexec('git commit -m "" -a', function (error, stdout, stderr) {
         //   grunt.log.writeln('stdout: ' + stdout);
         //   grunt.log.writeln('stderr: ' + stderr);
