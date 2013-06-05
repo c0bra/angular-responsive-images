@@ -160,13 +160,14 @@ module.exports = function(grunt) {
       }).then(function () {
 
         // return system('git commit', '-a -m \'Automatic gh-pages build\'');
-        cexec('git commit -m "" -a', function (error, stdout, stderr) {
-          grunt.log.writeln('stdout: ' + stdout);
-          grunt.log.writeln('stderr: ' + stderr);
-          if (error !== null) {
-            grunt.log.writeln('exec error: ' + error);
-          }
-        });
+        return system('git commit -a -m ""');
+        // cexec('git commit -m "" -a', function (error, stdout, stderr) {
+        //   grunt.log.writeln('stdout: ' + stdout);
+        //   grunt.log.writeln('stderr: ' + stderr);
+        //   if (error !== null) {
+        //     grunt.log.writeln('exec error: ' + error);
+        //   }
+        // });
 
       }).then(function () {
         return system('git checkout master'); 
