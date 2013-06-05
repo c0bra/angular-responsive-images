@@ -166,7 +166,7 @@ module.exports = function(grunt) {
 
         return ensureDirty().then(function() {
           return system('git commit --allow-empty-message -a');
-        }
+        });
 
         // grunt.log.writeln('b', b);
 
