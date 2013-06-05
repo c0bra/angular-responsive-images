@@ -8,7 +8,7 @@ describe('ngSrcResponsive', function () {
       htmlWrap,
       viewportWidth, viewportHeight;
 
-  beforeEach(module('ngResImg'));
+  beforeEach(module('ngResponsiveImages'));
 
   beforeEach(inject(['$rootScope', '$compile', function ($rootScope, _$compile_) {
     // TODO: create and compile the directive here
@@ -47,6 +47,8 @@ describe('ngSrcResponsive', function () {
   //   4. Load the correct href based on the viewport size
   //   5. Handle viewport change events for swapping out images
   //      a. I think this means we'll need to cache the image? Or maybe the browser should handle it?
+
+  // TODO: add test for ng-src-responsive="{ blah blah blah }", i.e. not an array
 
   describe('with a single query of min-width: 0', function() {
     describe('and one responsive source and a global media query', function() {
