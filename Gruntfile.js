@@ -156,11 +156,11 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('git merge master');
       }).then(function () {
-        return system('grunt build');
+        return system('grunt merge build');
       }).then(function () {
-        return system('git', 'commit -a -m \'Automatic gh-pages build\'');
+        return system('git commit', '-a -m \'Automatic gh-pages build\'');
       }).then(function () {
-        return system('git checkout master');
+        return system('git checkout master'); 
       })
     );
   });
@@ -170,13 +170,24 @@ module.exports = function(grunt) {
   var exec = require('faithful-exec'), shjs = require('shelljs');
 
   function system(cmd, opts) {
-    grunt.log.write('% ' + cmd + ' ' + opts + '\n');
-    return exec(cmd, opts).then(function (result) {
-      grunt.log.write(result.stderr + result.stdout);
-    }, function (error) {
-      grunt.log.write(error.stderr + '\n');
-      throw 'Failed to run \'' + cmd + '\'';
-    });
+    if (opts) {
+      grunt.log.write('% ' + cmd + ' ' + opts + '\n');
+      return exec(cmd, opts).then(function (result) {
+        grunt.log.write(result.stderr + result.stdout);
+      }, function (error) {
+        grunt.log.write(error.stderr + '\n');
+        throw 'Failed to run \'' + cmd + '\'';
+      });
+    }
+    else {
+      grunt.log.write('% ' + cmd + '\n');
+      return exec(cmd).then(function (result) {
+        grunt.log.write(result.stderr + result.stdout);
+      }, function (error) {
+        grunt.log.write(error.stderr + '\n');
+        throw 'Failed to run \'' + cmd + '\'';
+      });
+    }
   }
 
   function promising(task, promise) {
