@@ -61,13 +61,16 @@ module.exports = function(grunt) {
       // Auto-build when source files change
       build: {
         files: ['src/**/*.js'],
-        tasks: ['build']
+        tasks: ['build'],
+        options: {
+          livereload: true
+        }
       },
       // Run unit test with karma
       karma: {
         files: ['test/**/*.js', 'dist/**/*.js', '!test/config/*'],
         tasks: ['karma:watch:run']
-      }
+      },
     },
 
     uglify: {

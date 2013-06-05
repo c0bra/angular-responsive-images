@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Angular-responsive-images by c0bra</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.0.6/angular.js"></script>
+    <script src="dist/angular-responsive-images.js"></script>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+  </head>
+  <body ng-app="test">
+    <strong>Resize your browser and refresh to see the image change</strong>
+    <br>
+    <img src="http://placehold.it/100x100" ng-src-responsive="[ [ 'small', 'http://placehold.it/400x400' ], [ 'medium', 'http://placehold.it/800x800' ], [ 'large', 'http://placehold.it/1200x1200' ] ]" />
+  </body>
+
+  <script type="text/javascript">
+    angular.module('test', ['ngResponsiveImages']);
+  </script>
+</html>
