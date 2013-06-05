@@ -160,7 +160,7 @@ module.exports = function(grunt) {
       }).then(function () {
         return system('git', 'commit -a -m \'Automatic gh-pages build\'');
       }).then(function () {
-        return system('git checkout master');
+        return system('git checkout master'); 
       })
     );
   });
