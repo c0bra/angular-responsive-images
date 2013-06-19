@@ -21,9 +21,7 @@ app.value('presetMediaQueries', {
 app.directive('ngSrcResponsive', ['presetMediaQueries', '$timeout', function(presetMediaQueries, $timeout) {
   return {
     restrict: 'A',
-    scope: {
-      src: '@' // Don't know if we really need this
-    },
+    priority: 100,
     link: function(scope, elm, attrs) {
       // Double-check that the matchMedia function matchMedia exists
       if (typeof(matchMedia) !== 'function') {
