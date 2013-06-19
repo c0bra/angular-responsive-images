@@ -184,7 +184,7 @@ module.exports = function(grunt) {
         // var bigFileDir = path.dirname(bigfile);
         // var bigfileName = path.basename(bigfile, path.extname(bigfile));
 
-        var newBigFile = bigFileDir + '/' + bigFileName + '-' + version + '.js';
+        var newBigFile = bigFileDir + '/' + bigfileName + '-' + version + '.js';
 
         return system('cp ' + grunt.config('uglify.build.src') + ' ' + newBigFile);
       }).then(function () {
