@@ -87,6 +87,17 @@ describe('ngSrcResponsive', function () {
     });
   });
 
+  describe('when using an expression as an image source', function() {
+    beforeEach(function() {
+      $scope.imgSrc = 'evaluated.jpg';
+      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 0px)\', \'{{ imgSrc }}\' ] ]/>');
+    });
+
+    iit('should evaluate the expression to get the value', function() {
+      expect(elm.attr('src')).toEqual('evaluated.jpg');
+    });
+  });
+
   // TODO: add specs for event-based media queries. But how do we do that?
 });
 

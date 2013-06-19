@@ -157,46 +157,44 @@ module.exports = function(grunt) {
 
   var path = require('path');
   var makePromise = require('make-promise');
-  // grunt.registerTask('publish-pages', 'Publish a clean build, docs, and sample to github.io', function () {
-  //   promising(this,
-  //     ensureCleanMaster().then(function () {
-  //       // Remove anything in the build dir
-  //       shjs.rm('-rf', 'dist');
+  grunt.registerTask('publish-pages', 'Publish a clean build, docs, and sample to github.io', function () {
+    promising(this,
+      ensureCleanMaster().then(function () {
+        // Remove anything in the build dir
+        shjs.rm('-rf', 'dist');
 
-  //       // Move to the gh-pages branch
-  //       return system('git checkout gh-pages');
-  //     }).then(function () {
-  //       // Merge the master branch changes in
-  //       return system('git merge master');
-  //     }).then(function () {
-  //       // Build from source
-  //       return system('grunt build');
-  //     }).then(function () {
-  //       // Copy the built files to their versioned counterparts
-  //       var version = grunt.config('pkg.version');
+        // Move to the gh-pages branch
+        return system('git checkout gh-pages');
+      }).then(function () {
+        // Merge the master branch changes in
+        return system('git merge master');
+      }).then(function () {
+        // Build from source
+        return system('grunt build');
+      }).then(function () {
+        // Copy the built files to their versioned counterparts
+        var version = grunt.config('pkg.version');
 
+        var bigfile = grunt.config('uglify.build.src');
+        var bigFileDir = path.dirname(bigfile);
+        var bigfileName = path.basename(bigfile, path.extname(bigfile));
 
+        // var bigfile = grunt.config('uglify.build.src');
+        // var bigFileDir = path.dirname(bigfile);
+        // var bigfileName = path.basename(bigfile, path.extname(bigfile));
 
-  //       var bigfile = grunt.config('uglify.build.src');
-  //       var bigFileDir = path.dirname(bigfile);
-  //       var bigfileName = path.basename(bigfile, path.extname(bigfile));
+        return system('cp ' + grunt.config('uglify.build.src') +  );
+      }).then(function () {
+        return system('git diff --exit-code', {}, true).then(function(){},
+          function(){
+            return system('git commit --allow-empty-message -a');
+          });
 
-  //       var bigfile = grunt.config('uglify.build.src');
-  //       var bigFileDir = path.dirname(bigfile);
-  //       var bigfileName = path.basename(bigfile, path.extname(bigfile));
-
-  //       return system('cp ' + grunt.config('uglify.build.src') +  );
-  //     }).then(function () {
-  //       return system('git diff --exit-code', {}, true).then(function(){},
-  //         function(){
-  //           return system('git commit --allow-empty-message -a');
-  //         });
-
-  //     }).then(function () {
-  //       return system('git checkout master');
-  //     })
-  //   );
-  // });
+      }).then(function () {
+        return system('git checkout master');
+      })
+    );
+  });
 
   grunt.registerTask('prepare-release', function () {
     var bower = grunt.file.readJSON('bower.json'),
