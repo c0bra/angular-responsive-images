@@ -1,5 +1,9 @@
-/*! angular-responsive-images 2013-06-05 */
-(function(){
+/**
+ * Angular responsive images
+ * @version v0.0.0-dev-2013-06-19
+ * @link https://github.com/c0bra/angular-res-img.git
+ * @license MIT License, http://www.opensource.org/licenses/MIT
+ */(function(){
 
 var app = angular.module('ngResponsiveImages', []);
 
@@ -22,9 +26,7 @@ app.value('presetMediaQueries', {
 app.directive('ngSrcResponsive', ['presetMediaQueries', '$timeout', function(presetMediaQueries, $timeout) {
   return {
     restrict: 'A',
-    scope: {
-      src: '@' // Don't know if we really need this
-    },
+    priority: 100,
     link: function(scope, elm, attrs) {
       // Double-check that the matchMedia function matchMedia exists
       if (typeof(matchMedia) !== 'function') {
