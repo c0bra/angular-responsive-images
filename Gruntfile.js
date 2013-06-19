@@ -184,7 +184,9 @@ module.exports = function(grunt) {
         // var bigFileDir = path.dirname(bigfile);
         // var bigfileName = path.basename(bigfile, path.extname(bigfile));
 
-        // return system('cp ' + grunt.config('uglify.build.src') +  );
+        var newBigFile = bigFileDir + '/' + bigFileName + '-' + version + '.js';
+
+        return system('cp ' + grunt.config('uglify.build.src') + ' ' + newBigFile);
       }).then(function () {
         return system('git diff --exit-code', {}, true)
           .then(
