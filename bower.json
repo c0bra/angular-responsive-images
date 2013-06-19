@@ -1,0 +1,8 @@
+{
+  "name": "angular-responsive-images",
+  "version": "0.0.0",
+  "main": "./release/angular-ui-router.min.js",
+  "dependencies": {
+    "angular": ">= 1.0.6"
+  }
+}

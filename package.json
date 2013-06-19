@@ -18,7 +18,7 @@
     "images"
   ],
   "author": "Brian Hann",
-  "license": "BSD",
+  "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-cli": "~0.1.9",
@@ -32,6 +32,6 @@
     "phantomjs": "~1.9.0-6",
     "shelljs": "~0.1.4",
     "faithful-exec": "~0.1.0",
-    "grunt-git": "0.0.1"
+    "make-promise": "~0.2.1"
   }
 }
