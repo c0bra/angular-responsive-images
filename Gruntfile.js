@@ -158,7 +158,8 @@ module.exports = function(grunt) {
   var path = require('path');
   var makePromise = require('make-promise');
   grunt.registerTask('publish-pages', 'Publish a clean build, docs, and sample to github.io', function () {
-    promising(this,
+    var task = this;
+    promising(task,
       ensureCleanMaster().then(function () {
         // Remove anything in the build dir
         shjs.rm('-rf', 'dist');
@@ -190,13 +191,15 @@ module.exports = function(grunt) {
             function(){}, // Empty because we only care about there NOT being diff contents, i.e. error code 1
             function(){
               // return system('git commit --allow-empty-message -a');
-              return system ('git add .');
-            })
-          .then(
-            function() {
-              return system('git commit --allow-empty-message -a');
-            }
-          );
+              return system ('git add .').then(function() {
+                return system('git commit --allow-empty-message -a');
+              });
+            });
+          // .then(
+          //   function() {
+          //     return system('git commit --allow-empty-message -a');
+          //   }
+          // );
 
       }).then(function () {
         return system('git checkout master');
