@@ -185,10 +185,18 @@ module.exports = function(grunt) {
 
         // return system('cp ' + grunt.config('uglify.build.src') +  );
       }).then(function () {
-        return system('git diff --exit-code', {}, true).then(function(){},
-          function(){
-            return system('git commit --allow-empty-message -a');
-          });
+        return system('git diff --exit-code', {}, true)
+          .then(
+            function(){}, // Empty because we only care about there NOT being diff contents, i.e. error code 1
+            function(){
+              // return system('git commit --allow-empty-message -a');
+              return system ('git add .');
+            })
+          .then(
+            function() {
+              return system('git commit --allow-empty-message -a');
+            }
+          );
 
       }).then(function () {
         return system('git checkout master');
