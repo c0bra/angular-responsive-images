@@ -7,6 +7,11 @@ Angular directive for handling responsive images.
 * [AngularJS](http://angularjs.org)
 * Paul Irish's [matchMedia() polyfill](https://github.com/paulirish/matchMedia.js/) if you want to support older browsers
 
+# Download / Reference
+
+* Full version: [https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.js](https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.js)
+* Minified version: [https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.min.js](https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.min.js)
+
 # Usage
 
 The `ng-src-responsive` directive takes an array of arrays. The inner arrays each have two elements, the first being the media query and the second being the href of the image to load if that media query matches. The *last* matcing media query gets used so order your array from smallest to largest.
