@@ -14,7 +14,7 @@ Angular directive for handling responsive images.
 
 # Usage
 
-The `ng-src-responsive` directive takes an array of arrays. The inner arrays each have two elements, the first being the media query and the second being the href of the image to load if that media query matches. The *last* matcing media query gets used so order your array from smallest to largest.
+The `bh-src-responsive` directive takes an array of arrays. The inner arrays each have two elements, the first being the media query and the second being the href of the image to load if that media query matches. The *last* matcing media query gets used so order your array from smallest to largest.
 
 Also you can use a default small image for `src=""` as that will always get loaded, and can prevent weird page reflows when we alter the `src` after your angular app is loaded.
 
