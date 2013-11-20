@@ -2,13 +2,13 @@
 
 "use strict";
 
-describe('ngSrcResponsive', function () {
+describe('bhSrcResponsive', function () {
   var elm, $scope, $compile, $timeout,
       recompile,
       htmlWrap,
       viewportWidth, viewportHeight;
 
-  beforeEach(module('ngResponsiveImages'));
+  beforeEach(module('bhResponsiveImages'));
 
   beforeEach(inject(['$rootScope', '$compile', '$timeout', function ($rootScope, _$compile_, _$timeout_) {
     // TODO: create and compile the directive here
@@ -16,7 +16,7 @@ describe('ngSrcResponsive', function () {
     $compile = _$compile_;
     $timeout = _$timeout_;
 
-    elm = angular.element('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 0px)\', \'default.jpg\' ] ]" />');
+    elm = angular.element('<img src="orig.jpg" bh-src-responsive="[ [ \'(min-width: 0px)\', \'default.jpg\' ] ]" />');
 
     $compile(elm)($scope);
     $scope.$digest();
@@ -45,7 +45,7 @@ describe('ngSrcResponsive', function () {
 
   // TODO: It must
   //   1. Not prevent the loading of the initial src attribute value
-  //   2. Accept a media query and href value to the ng-src-responsive="" attribute
+  //   2. Accept a media query and href value to the bh-src-responsive="" attribute
   //   3. Correctly run matchMedia queries to get which href to load
   //   4. Load the correct href based on the viewport size
   //   5. Handle viewport change events for swapping out images
@@ -54,7 +54,7 @@ describe('ngSrcResponsive', function () {
   describe('when the directive does not evaluate to an array', function() {
     it('should throw an exception', function() {
       expect(function(){
-        recompile('<img src="orig.jpg" ng-src-responsive="{ \'(min-width: 0px)\': \'default.jpg\' }" />');
+        recompile('<img src="orig.jpg" bh-src-responsive="{ \'(min-width: 0px)\': \'default.jpg\' }" />');
       }).toThrow();
     });
   });
@@ -69,7 +69,7 @@ describe('ngSrcResponsive', function () {
 
   describe('with two responsive sources where the final one is innerWidth+1', function() {
     beforeEach(function(){
-      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth+1) + 'px)\', \'default2.jpg\' ] ]" />');
+      elm = recompile('<img src="orig.jpg" bh-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth+1) + 'px)\', \'default2.jpg\' ] ]" />');
     });
 
     it('should choose the first (smaller) one', function() {
@@ -79,7 +79,7 @@ describe('ngSrcResponsive', function () {
 
   describe('with two responsive sources where the final one is innerWidth-1', function() {
     beforeEach(function(){
-      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth-1) + 'px)\', \'default2.jpg\' ] ]" />');
+      elm = recompile('<img src="orig.jpg" bh-src-responsive="[ [ \'(min-width: 10px)\', \'default1.jpg\' ], [ \'(min-width: ' + (viewportWidth-1) + 'px)\', \'default2.jpg\' ] ]" />');
     });
 
     it('should choose the second (larger) one', function() {
@@ -90,7 +90,7 @@ describe('ngSrcResponsive', function () {
   describe('when using an expression as an image source', function() {
     beforeEach(function() {
       $scope.imgSrc = 'evaluated.jpg';
-      elm = recompile('<img src="orig.jpg" ng-src-responsive="[ [ \'(min-width: 0px)\', \'{{ imgSrc }}\' ] ]" />');
+      elm = recompile('<img src="orig.jpg" bh-src-responsive="[ [ \'(min-width: 0px)\', \'{{ imgSrc }}\' ] ]" />');
     });
 
     it('should evaluate the expression to get the value', function() {

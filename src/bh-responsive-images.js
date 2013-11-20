@@ -1,6 +1,6 @@
 (function(){
 
-var app = angular.module('ngResponsiveImages', []);
+var app = angular.module('bhResponsiveImages', []);
 
 // Default queries (stolen from Zurb Foundation)
 app.value('presetMediaQueries', {
@@ -18,7 +18,7 @@ app.value('presetMediaQueries', {
                'only screen and (min-resolution: 2dppx)'
 });
 
-app.directive('ngSrcResponsive', ['presetMediaQueries', '$timeout', function(presetMediaQueries, $timeout) {
+app.directive('bhSrcResponsive', ['presetMediaQueries', '$timeout', function(presetMediaQueries, $timeout) {
   return {
     restrict: 'A',
     priority: 100,
@@ -102,11 +102,11 @@ app.directive('ngSrcResponsive', ['presetMediaQueries', '$timeout', function(pre
       }
 
       var updaterDereg;
-      attrs.$observe('ngSrcResponsive', function(value) {
+      attrs.$observe('bhSrcResponsive', function(value) {
         var querySets = scope.$eval(value);
         
         if (querySets instanceof Array === false) {
-          throw "Expected evaluate ng-src-responsive to evaluate to an Array, instead got: " + querySets;
+          throw "Expected evaluate bh-src-responsive to evaluate to an Array, instead got: " + querySets;
         }
 
         updateFromQuery(querySets);
