@@ -117,4 +117,4 @@ You can also pass a --browsers option to these tasks (the default browser is Pha
 
 # Acknowledgements
 
-The idea for this directive came from Foundation's [interchange](http://foundation.zurb.com/docs/components/interchange.html) attribute. Also their media query preset were merciless stolen.
+The idea for this directive came from Foundation's [interchange](http://foundation.zurb.com/docs/components/interchange.html) attribute. Also their media query preset were mercilessly stolen.
