@@ -1,6 +1,11 @@
 {
   "name": "angular-responsive-images",
   "version": "0.0.1",
+  "main": [
+    "dist/angular-responsive-images.js",
+    "dist/angular-responsive-images.min.js",
+  ],
+  "keywords": ["angular", "responsive", "images", "image", "mobile", "directive"],
   "dependencies": {
     "angular": ">= 1.0.6"
   }
