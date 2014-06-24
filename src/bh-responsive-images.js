@@ -28,6 +28,17 @@ app.directive('bhSrcResponsive', ['presetMediaQueries', '$timeout', function(pre
         throw "Function 'matchMedia' does not exist";
       }
 
+      // Flag for whether or not we've changed the src
+      var responsiveSrcFlag = false;
+
+      // Watch for changes to the src attr, save it if we haven't changed it ourselves
+      var origSrc = attrs.src;
+      attrs.$observe('src', function (n, o) {
+        if (n !== o && n && !responsiveSrcFlag) {
+          origSrc = n;
+        }
+      });
+
       // Array of media query and listener sets
       // 
       // {
@@ -87,6 +98,10 @@ app.directive('bhSrcResponsive', ['presetMediaQueries', '$timeout', function(pre
 
             if (lastTrueQuerySet) {
               setSrc( lastTrueQuerySet[1] );
+              responsiveSrcFlag = true;
+            }
+            else {
+              setSrc( origSrc );
             }
 
             waiting = false;

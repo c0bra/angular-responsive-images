@@ -98,6 +98,17 @@ describe('bhSrcResponsive', function () {
     });
   });
 
+  describe('when no media queries match', function () {
+    beforeEach(function() {
+      $scope.orig = 'orig.jpg';
+      elm = recompile('<img ng-src="{{ orig }}" bh-src-responsive="[ [ \'(min-width: 9999px)\', \'new.jpg\' ] ]" />');
+    });
+
+    it('should revert back to the original src value', function () {
+      expect(elm.attr('src')).toEqual('orig.jpg');
+    });
+  });
+
   // TODO: add specs for event-based media queries. But how do we do that?
 });
 
