@@ -39,13 +39,16 @@ module.exports = function(grunt) {
     },
 
     'gh-pages': {
-      options: {
-        base: 'release',
-        tag: 'v<%= pkg.version %>',
-        add: true,
-        push: false
-      },
-      src: '**/*'
+      release: {
+        options: {
+          base: 'release',
+          tag: 'v<%= pkg.version %>',
+          message: 'Release v<%= pkg.version %>',
+          add: true,
+          push: false
+        },
+        src: ['**/*']
+      }
     },
 
     defaultBrowsers: ['PhantomJS'],
