@@ -13,6 +13,7 @@ results
 
 npm-debug.log
 
+.grunt
 dist
 release
 
