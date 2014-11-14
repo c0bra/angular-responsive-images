@@ -26,11 +26,13 @@ module.exports = function(grunt) {
     },
 
     bump: {
-      files: ['package.json', 'bower.json'],
-      updateConfigs: ['pkg'],
-      commitFiles: ['package.json', 'bower.json'],
-      commit: false,
-      push: false
+      options: {
+        files: ['package.json', 'bower.json'],
+        updateConfigs: ['pkg'],
+        commitFiles: ['package.json', 'bower.json'],
+        commit: false,
+        push: false
+      }
     },
 
     'gh-pages': {
