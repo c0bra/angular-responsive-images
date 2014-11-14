@@ -186,9 +186,9 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [ 'test' ]);
   grunt.registerTask('test', "Jshint, build, and run unit tests", [ 'jshint', 'build', 'karma:unit' ]);
   grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch:start', 'watch']);
-  grunt.registerTask('build', "Jshint build from source and minify", ['clean', 'jshint', 'concat', 'uglify' ]);
+  grunt.registerTask('build', "Jshint build from source and minify", ['jshint', 'concat', 'uglify' ]);
   // grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
-  grunt.registerTask('release', 'Tag and perform a release', ['build', 'copy:release', 'bump', 'gh-pages']);
+  grunt.registerTask('release', 'Tag and perform a release', ['clean', 'build', 'copy:release', 'bump', 'gh-pages']);
 
 
 
