@@ -139,7 +139,7 @@ app.directive('bhSrcResponsive', ['presetMediaQueries', '$timeout', function(pre
       });
 
       // Remove media-query listeners when $scope is destroyed
-      scope.$destroy(function () {
+      scope.$on('$destroy', function () {
         angular.forEach(listenerSets, function(set) {
           set.mql.removeListener(set.listener);
         });
