@@ -7,7 +7,7 @@
   "license": "MIT",
   "version": "0.0.5",
   "main": [
-    "js/bh-responsive-images.js"
+    "js/angular-responsive-images.js"
   ],
   "ignore": [
     "**/.*",
