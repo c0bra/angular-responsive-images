@@ -10,12 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/c0bra/angular-res-img.git"
+    "url": "https://github.com/c0bra/angular-responsive-images.git"
   },
   "keywords": [
     "angular",
     "responsive",
-    "images"
+    "images",
+    "mobile"
   ],
   "author": "Brian Hann",
   "license": "MIT",
