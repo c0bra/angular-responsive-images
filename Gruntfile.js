@@ -45,7 +45,7 @@ module.exports = function(grunt) {
           tag: 'v<%= pkg.version %>',
           message: 'Release v<%= pkg.version %>',
           add: true,
-          push: false
+          push: true
         },
         src: ['**/*']
       }
