@@ -5,7 +5,7 @@
   ],
   "description": "Angular directive for handling responsive images",
   "license": "MIT",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "main": [
     "src/bh-responsive-images.js"
   ],
