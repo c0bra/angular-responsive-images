@@ -56,7 +56,7 @@ module.exports = function(grunt) {
       options: {
         banner: '/**\n' +
                 ' * <%= pkg.description %>\n' +
-                ' * @version v<%= pkg.version %><%= buildtag %>\n' +
+                ' * @version v<%= pkg.version %>\n' +
                 ' * @link <%= pkg.repository.url %>\n' +
                 ' * @license MIT License, http://www.opensource.org/licenses/MIT\n' +
                 ' */'
@@ -111,7 +111,8 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        // banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+        banner: '<%= concat.options.banner %>'
       },
       build: {
         src: 'dist/<%= pkg.name %>.js',
@@ -188,7 +189,7 @@ module.exports = function(grunt) {
   grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch:start', 'watch']);
   grunt.registerTask('build', "Jshint build from source and minify", ['jshint', 'concat', 'uglify' ]);
   // grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
-  grunt.registerTask('release', 'Tag and perform a release', ['clean', 'build', 'copy:release', 'bump', 'gh-pages']);
+  grunt.registerTask('release', 'Tag and perform a release', ['clean', 'bump', 'build', 'copy:release', 'gh-pages']);
 
 
 
