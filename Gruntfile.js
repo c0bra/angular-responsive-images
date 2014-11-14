@@ -20,8 +20,10 @@ module.exports = function(grunt) {
 
     copy: {
       release: {
-        src: 'dist/*.js',
-        dest: 'release/js/'
+        files: [
+          { src: 'bower.json', dest: 'release/bower.json' },
+          { expand: true, src: '**/*.js', cwd: 'dist/', dest: 'release/js/' }
+        ]
       }
     },
 
