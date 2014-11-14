@@ -1,6 +1,6 @@
 /**
  * Angular responsive images
- * @version v0.0.5
+ * @version v0.0.6
  * @link https://github.com/c0bra/angular-responsive-images.git
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */(function(){
