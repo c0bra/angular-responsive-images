@@ -7,10 +7,9 @@ Angular directive for handling responsive images.
 * [AngularJS](http://angularjs.org)
 * Paul Irish's [matchMedia() polyfill](https://github.com/paulirish/matchMedia.js/) if you want to support older browsers
 
-# Download / Reference
+# Install
 
-* Full version: [https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.js](https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.js)
-* Minified version: [https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.min.js](https://rawgithub.com/c0bra/angular-responsive-images/gh-pages/dist/angular-responsive-images.min.js)
+    bower install angular-responsive-images
 
 # Usage
 
@@ -94,7 +93,7 @@ Here are some useful presets that you can use, which were stolen from [Foundatio
 
 # Testing
 
-It's difficult to test different viewport sizes, or at least difficult enough that a moron like me can't figure it out. So right now I dynamically get the `window` `innerWidth` and `innerHeight` properties to know what the testing browser has, then my tests run off that.
+It's difficult to test different viewport sizes, or at least difficult enough that I can't figure it out. So right now I dynamically get the `window` `innerWidth` and `innerHeight` properties to know what the testing browser has, then my tests run off that.
 
 The test tasks a pretty simple:
 
@@ -112,8 +111,6 @@ You can also pass a --browsers option to these tasks (the default browser is Pha
 * Handle updates bh-src-responsive bound values...
 * Add handling of ng-src
 * Add pretty auto-generated gh-pages branch with examples of the same code in a bunch of different iframes``
-* Add bower.json
-* Add release tasks
 
 # Acknowledgements
 
