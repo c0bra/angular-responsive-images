@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   var browsers = typeof grunt.option('browsers') == 'string' ? grunt.option('browsers').split(',') : undefined;
 
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-bump');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -14,6 +15,11 @@ module.exports = function(grunt) {
     srcFiles: 'src/**/*.js',
     builddir: 'dist',
     buildtag: '-dev-' + grunt.template.today('yyyy-mm-dd'),
+
+    bump: {
+      files: ['package.json', 'bower.json'],
+
+    },
 
     defaultBrowsers: ['PhantomJS'],
 
@@ -154,7 +160,10 @@ module.exports = function(grunt) {
   grunt.registerTask('test', "Jshint, build, and run unit tests", [ 'jshint', 'build', 'karma:unit' ]);
   grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch:start', 'watch']);
   grunt.registerTask('build', "Jshint build from source and minify", [ 'jshint', 'concat', 'uglify' ]);
+  // grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
   grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
+
+
 
   var path = require('path');
   var makePromise = require('make-promise');

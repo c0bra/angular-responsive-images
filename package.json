@@ -33,6 +33,7 @@
     "shelljs": "~0.1.4",
     "faithful-exec": "~0.1.0",
     "make-promise": "~0.2.1",
-    "karma-jasmine": "^0.1.5"
+    "karma-jasmine": "^0.1.5",
+    "grunt-bump": "0.0.16"
   }
 }

@@ -1,9 +1,20 @@
 {
   "name": "angular-responsive-images",
+  "authors": [
+    "Brian Hann"
+  ],
+  "description": "Angular directive for handling responsive images",
+  "license": "MIT",
   "version": "0.0.4",
   "main": [
-    "dist/angular-responsive-images.js",
-    "dist/angular-responsive-images.min.js"
+    "dist/angular-responsive-images.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "src",
+    "node_modules",
+    "bower_components",
+    "test"
   ],
   "keywords": ["angular", "responsive", "images", "image", "mobile", "directive"],
   "dependencies": {
