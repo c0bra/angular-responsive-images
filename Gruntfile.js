@@ -30,7 +30,8 @@ module.exports = function(grunt) {
         files: ['package.json', 'bower.json'],
         updateConfigs: ['pkg'],
         commitFiles: ['package.json', 'bower.json'],
-        commit: false,
+        commit: true
+        createTag: false,
         push: false
       }
     },
