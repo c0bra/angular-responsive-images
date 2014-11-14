@@ -14,6 +14,7 @@ results
 npm-debug.log
 
 dist
+release
 
 node_modules
 bower_components

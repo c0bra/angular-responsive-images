@@ -4,11 +4,13 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-bump');
+  grunt.loadNpmTasks('grunt-gh-pages');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
@@ -16,14 +18,34 @@ module.exports = function(grunt) {
     builddir: 'dist',
     buildtag: '-dev-' + grunt.template.today('yyyy-mm-dd'),
 
+    copy: {
+      release: {
+        src: 'dist/*.js',
+        dest: 'release/js/'
+      }
+    },
+
     bump: {
       files: ['package.json', 'bower.json'],
+      updateConfigs: ['pkg'],
+      commitFiles: ['package.json', 'bower.json'],
+      commit: false,
+      push: false
+    },
 
+    'gh-pages': {
+      options: {
+        base: 'release',
+        tag: 'v<%= pkg.version %>',
+        add: true,
+        push: false
+      },
+      src: '**/*'
     },
 
     defaultBrowsers: ['PhantomJS'],
 
-    clean: ['<%= builddir %>'],
+    clean: ['<%= builddir %>', 'release'],
 
     concat: {
       options: {
@@ -159,9 +181,9 @@ module.exports = function(grunt) {
   grunt.registerTask('default', [ 'test' ]);
   grunt.registerTask('test', "Jshint, build, and run unit tests", [ 'jshint', 'build', 'karma:unit' ]);
   grunt.registerTask('debug', "Run watches and live reload server", ['karma:watch:start', 'watch']);
-  grunt.registerTask('build', "Jshint build from source and minify", [ 'jshint', 'concat', 'uglify' ]);
+  grunt.registerTask('build', "Jshint build from source and minify", ['clean', 'jshint', 'concat', 'uglify' ]);
   // grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
-  grunt.registerTask('release', 'Tag and perform a release', ['prepare-release', 'build', 'perform-release']);
+  grunt.registerTask('release', 'Tag and perform a release', ['build', 'copy:release', 'bump', 'gh-pages']);
 
 
 

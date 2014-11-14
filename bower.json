@@ -7,14 +7,15 @@
   "license": "MIT",
   "version": "0.0.4",
   "main": [
-    "dist/angular-responsive-images.js"
+    "js/bh-responsive-images.js"
   ],
   "ignore": [
     "**/.*",
-    "src",
+    "stylesheets",
     "node_modules",
     "bower_components",
-    "test"
+    "index.html",
+    "README.md"
   ],
   "keywords": ["angular", "responsive", "images", "image", "mobile", "directive"],
   "dependencies": {
