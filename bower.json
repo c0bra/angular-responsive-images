@@ -15,7 +15,8 @@
     "node_modules",
     "bower_components",
     "index.html",
-    "README.md"
+    "README.md",
+    "params.json"
   ],
   "keywords": ["angular", "responsive", "images", "image", "mobile", "directive"],
   "dependencies": {
