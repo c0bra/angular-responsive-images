@@ -1,7 +1,23 @@
 {
   "name": "angular-responsive-images",
-  "version": "0.0.0",
-  "main": "./release/angular-ui-router.min.js",
+  "authors": [
+    "Brian Hann"
+  ],
+  "description": "Angular directive for handling responsive images",
+  "license": "MIT",
+  "version": "0.0.5",
+  "main": [
+    "js/bh-responsive-images.js"
+  ],
+  "ignore": [
+    "**/.*",
+    "stylesheets",
+    "node_modules",
+    "bower_components",
+    "index.html",
+    "README.md"
+  ],
+  "keywords": ["angular", "responsive", "images", "image", "mobile", "directive"],
   "dependencies": {
     "angular": ">= 1.0.6"
   }
